@@ -104,9 +104,7 @@ export class AwsPricingApi {
       const response = await this.client.send(command)
 
       if (!response.PriceList || response.PriceList.length === 0) {
-        throw new Error(
-          `Preço não encontrado para ${instanceType} na região ${region}`
-        )
+        return 0
       }
 
       const priceList = JSON.parse(response.PriceList[0]) as PriceList
