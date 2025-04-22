@@ -64,6 +64,9 @@ program
   .description(
     'Analyzes security, cost, and explains terraform/terragrunt plan output'
   )
+  .option('--openai-api-key <key>', 'OpenAI API key')
+  .option('--terraform-plan-command <command>', 'Terraform plan command')
+  .option('--language <language>', 'Language to use for the analysis')
   .action(async (options) => {
     console.log(chalk.blue('🔍 Running all checks...'))
 
