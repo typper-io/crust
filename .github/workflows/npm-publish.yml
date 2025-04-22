@@ -28,8 +28,10 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: NPM whoami
-        run: npm whoami
+      - name: Configure NPM
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
