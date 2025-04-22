@@ -2,6 +2,8 @@
 
 Crust – see your infrastructure plan exposed with clarity.
 
+[Documentation](https://crust-f9187e76.mintlify.app)
+
 ## Why "Crust"?
 
 Crust is the outermost layer of the Earth, where everything visible happens — just like the terraform plan output: it shows what will change in your infrastructure, but in a raw, hard-to-read format.
