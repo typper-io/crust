@@ -60,7 +60,7 @@ jobs:
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `## 🧐 Crust Analysis Results\n\n\`\`\`\n${process.env.CRUST_OUTPUT}\n\`\`\``
+                body: `## 🧐 Crust Analysis Results\n\n${process.env.CRUST_OUTPUT}\n`
               });
             } catch (error) {
               console.error('Error creating comment:', error);
