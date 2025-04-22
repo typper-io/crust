@@ -3,6 +3,7 @@ import {
   GetProductsCommand,
   Filter,
 } from '@aws-sdk/client-pricing'
+import chalk from 'chalk'
 
 interface PriceDimension {
   pricePerUnit: {
@@ -118,7 +119,10 @@ export class AwsPricingApi {
 
       return totalPrice
     } catch (error) {
-      console.error(error)
+      console.error(
+        chalk.red('Error getting price for', instanceType, region, error)
+      )
+
       return 0
     }
   }
