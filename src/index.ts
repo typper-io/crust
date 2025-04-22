@@ -81,7 +81,11 @@ program
       return
     }
 
-    const { terraformPlanCommand } = config!
+    if (!options.terraformPlanCommand) {
+      options.terraformPlanCommand = config!.terraformPlanCommand
+    }
+
+    const { terraformPlanCommand } = options
 
     console.log(chalk.gray('Executing terraform plan...'))
 
