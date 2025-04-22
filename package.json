@@ -1,6 +1,6 @@
 {
   "name": "@typper-io/crust",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Crust is a CLI tool that uses OpenAI to enhance the Terraform and Terragrunt experience by providing security analysis, cost analysis, and detailed plan explanations.",
   "main": "dist/src/index.js",
   "repository": "https://github.com/typper-io/crust",

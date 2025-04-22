@@ -68,11 +68,11 @@ export async function analyzeCost({
     }
 
     if (!openaiKey) {
-      openaiKey = config!.openaiKey
+      openaiKey = config?.openaiKey
     }
 
     if (!terraformPlanCommand) {
-      terraformPlanCommand = config!.terraformPlanCommand
+      terraformPlanCommand = config?.terraformPlanCommand
     }
 
     const openai = new OpenAI({
@@ -82,7 +82,7 @@ export async function analyzeCost({
     if (!output) {
       console.log(chalk.gray('Executing terraform plan...'))
 
-      output = await asyncExec(terraformPlanCommand)
+      output = await asyncExec(terraformPlanCommand!)
     }
 
     console.log(chalk.gray('Mapping changes...'))

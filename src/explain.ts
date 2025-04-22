@@ -28,15 +28,15 @@ export async function explainTerraform({
     }
 
     if (!openaiKey) {
-      openaiKey = config!.openaiKey
+      openaiKey = config?.openaiKey
     }
 
     if (!language) {
-      language = config!.language
+      language = config?.language
     }
 
     if (!terraformPlanCommand) {
-      terraformPlanCommand = config!.terraformPlanCommand
+      terraformPlanCommand = config?.terraformPlanCommand
     }
 
     const openai = new OpenAI({
@@ -46,7 +46,7 @@ export async function explainTerraform({
     if (!output) {
       console.log(chalk.gray('Executing terraform plan...'))
 
-      output = await asyncExec(terraformPlanCommand)
+      output = await asyncExec(terraformPlanCommand!)
     }
 
     console.log(chalk.gray('Explaining changes...'))
