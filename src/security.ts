@@ -3,19 +3,44 @@ import OpenAI from 'openai'
 
 import { asyncExec, getConfig, formatXmlTags } from './utils'
 
-export async function analyzeSecurity(output?: string) {
+type AnalyzeSecurityProps = {
+  output?: string
+  openaiKey?: string
+  language?: string
+  terraformPlanCommand?: string
+}
+
+export async function analyzeSecurity({
+  output,
+  openaiKey,
+  language,
+  terraformPlanCommand,
+}: AnalyzeSecurityProps) {
   try {
     console.log(chalk.blue('🔍 Analyzing security issues...'))
 
     console.log(chalk.gray('Getting configuration...'))
 
-    const config = getConfig()
+    const config = getConfig({
+      openaiKey,
+      terraformPlanCommand,
+    })
 
-    if (!config) {
+    if (!config && !openaiKey && !terraformPlanCommand) {
       return
     }
 
-    const { openaiKey, terraformPlanCommand, language } = config
+    if (!openaiKey) {
+      openaiKey = config!.openaiKey
+    }
+
+    if (!language) {
+      language = config!.language
+    }
+
+    if (!terraformPlanCommand) {
+      terraformPlanCommand = config!.terraformPlanCommand
+    }
 
     const openai = new OpenAI({
       apiKey: openaiKey,

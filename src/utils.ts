@@ -47,8 +47,20 @@ export type Config = {
   language: string
 }
 
-export function getConfig(): Config | null {
+export type ConfigOptions = {
+  openaiKey?: string
+  terraformPlanCommand?: string
+}
+
+export function getConfig({
+  openaiKey,
+  terraformPlanCommand,
+}: ConfigOptions): Config | null {
   try {
+    if (openaiKey && terraformPlanCommand) {
+      return null
+    }
+
     const configPath = path.join(os.homedir(), '.crust.json')
     const config = JSON.parse(readFileSync(configPath, 'utf8')) as Config
     return config

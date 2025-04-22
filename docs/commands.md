@@ -21,7 +21,7 @@ This command will ask for:
 Analyzes your Terraform infrastructure for potential security issues using OpenAI.
 
 ```bash
-crust security
+crust security [--openai-api-key <key>] [--language <language>] [--terraform-plan-command <command>]
 ```
 
 This command will:
@@ -35,7 +35,7 @@ This command will:
 Analyzes the cost of your AWS infrastructure changes using the AWS Pricing API.
 
 ```bash
-crust cost
+crust cost [--openai-api-key <key>] [--terraform-plan-command <command>]
 ```
 
 This command will:
@@ -50,7 +50,7 @@ This command will:
 Provides a clear explanation of your Terraform plan using OpenAI.
 
 ```bash
-crust explain
+crust explain [--openai-api-key <key>] [--language <language>] [--terraform-plan-command <command>]
 ```
 
 This command will:
@@ -64,7 +64,7 @@ This command will:
 Runs all analyses (security, cost, and explanation) at once.
 
 ```bash
-crust all
+crust all [--openai-api-key <key>] [--language <language>] [--terraform-plan-command <command>]
 ```
 
 This command will:
@@ -79,6 +79,9 @@ All commands support the following global options:
 
 - `--help`: Show help for the command
 - `--version`: Show version information
+- `--openai-api-key <key>`: OpenAI API key to use for analysis
+- `--language <language>`: Language to use for the analysis (e.g., "en", "pt-br")
+- `--terraform-plan-command <command>`: Command to execute terraform plan
 
 ## Examples
 

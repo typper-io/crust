@@ -45,19 +45,35 @@ const Changes = z.object({
   cloudProvider: z.enum(['aws', 'azure', 'gcp']),
 })
 
-export async function analyzeCost(output?: string) {
+type AnalyzeCostProps = {
+  output?: string
+  openaiKey?: string
+  terraformPlanCommand?: string
+}
+export async function analyzeCost({
+  output,
+  openaiKey,
+  terraformPlanCommand,
+}: AnalyzeCostProps) {
   try {
-    console.log(chalk.blue('🔍 Analyzing Terraform costs...'))
-
     console.log(chalk.gray('Getting configuration...'))
 
-    const config = getConfig()
+    const config = getConfig({
+      openaiKey,
+      terraformPlanCommand,
+    })
 
-    if (!config) {
+    if (!config && !openaiKey && !terraformPlanCommand) {
       return
     }
 
-    const { openaiKey, terraformPlanCommand } = config
+    if (!openaiKey) {
+      openaiKey = config!.openaiKey
+    }
+
+    if (!terraformPlanCommand) {
+      terraformPlanCommand = config!.terraformPlanCommand
+    }
 
     const openai = new OpenAI({
       apiKey: openaiKey,

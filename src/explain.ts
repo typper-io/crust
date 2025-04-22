@@ -3,19 +3,41 @@ import OpenAI from 'openai'
 
 import { asyncExec, getConfig, formatXmlTags } from './utils'
 
-export async function explainTerraform(output?: string) {
+type ExplainTerraformProps = {
+  output?: string
+  openaiKey?: string
+  language?: string
+  terraformPlanCommand?: string
+}
+export async function explainTerraform({
+  output,
+  openaiKey,
+  language,
+  terraformPlanCommand,
+}: ExplainTerraformProps) {
   try {
-    console.log(chalk.blue('🔍 Explaining Terraform changes...'))
-
     console.log(chalk.gray('Getting configuration...'))
 
-    const config = getConfig()
+    const config = getConfig({
+      openaiKey,
+      terraformPlanCommand,
+    })
 
-    if (!config) {
+    if (!config && !openaiKey && !terraformPlanCommand) {
       return
     }
 
-    const { openaiKey, terraformPlanCommand, language } = config
+    if (!openaiKey) {
+      openaiKey = config!.openaiKey
+    }
+
+    if (!language) {
+      language = config!.language
+    }
+
+    if (!terraformPlanCommand) {
+      terraformPlanCommand = config!.terraformPlanCommand
+    }
 
     const openai = new OpenAI({
       apiKey: openaiKey,

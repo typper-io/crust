@@ -22,22 +22,41 @@ program.command('init').description('Initialize Crust').action(init)
 program
   .command('security')
   .description('Analyzes security issues in terraform plan/apply output')
-  .action(async () => {
-    return analyzeSecurity()
+  .option('--openai-api-key <key>', 'OpenAI API key')
+  .option('--language <language>', 'Language to use for the analysis')
+  .option('--terraform-plan-command <command>', 'Terraform plan command')
+  .action(async (options) => {
+    return analyzeSecurity({
+      openaiKey: options.openaiApiKey,
+      language: options.language,
+      terraformPlanCommand: options.terraformPlanCommand,
+    })
   })
 
 program
   .command('cost')
   .description('Analyzes the cost of terraform changes')
-  .action(async () => {
-    return analyzeCost()
+  .option('--openai-api-key <key>', 'OpenAI API key')
+  .option('--terraform-plan-command <command>', 'Terraform plan command')
+  .action(async (options) => {
+    return analyzeCost({
+      openaiKey: options.openaiApiKey,
+      terraformPlanCommand: options.terraformPlanCommand,
+    })
   })
 
 program
   .command('explain')
   .description('Explains terraform/terragrunt plan output')
-  .action(async () => {
-    return explainTerraform()
+  .option('--openai-api-key <key>', 'OpenAI API key')
+  .option('--language <language>', 'Language to use for the analysis')
+  .option('--terraform-plan-command <command>', 'Terraform plan command')
+  .action(async (options) => {
+    return explainTerraform({
+      openaiKey: options.openaiApiKey,
+      language: options.language,
+      terraformPlanCommand: options.terraformPlanCommand,
+    })
   })
 
 program
@@ -45,26 +64,43 @@ program
   .description(
     'Analyzes security, cost, and explains terraform/terragrunt plan output'
   )
-  .action(async () => {
+  .action(async (options) => {
     console.log(chalk.blue('🔍 Running all checks...'))
 
     console.log(chalk.gray('Getting configuration...'))
 
-    const config = getConfig()
+    const config = getConfig({
+      openaiKey: options.openaiApiKey,
+      terraformPlanCommand: options.terraformPlanCommand,
+    })
 
-    if (!config) {
+    if (!config && !options.openaiApiKey && !options.terraformPlanCommand) {
       return
     }
 
-    const { terraformPlanCommand } = config
+    const { terraformPlanCommand } = config!
 
     console.log(chalk.gray('Executing terraform plan...'))
 
     const output = await asyncExec(terraformPlanCommand)
 
-    await analyzeSecurity(output)
-    await analyzeCost(output)
-    await explainTerraform(output)
+    await analyzeSecurity({
+      output,
+      openaiKey: options.openaiApiKey,
+      language: options.language,
+      terraformPlanCommand: options.terraformPlanCommand,
+    })
+    await analyzeCost({
+      output,
+      openaiKey: options.openaiApiKey,
+      terraformPlanCommand: options.terraformPlanCommand,
+    })
+    await explainTerraform({
+      output,
+      openaiKey: options.openaiApiKey,
+      language: options.language,
+      terraformPlanCommand: options.terraformPlanCommand,
+    })
   })
 
 program.parse()

@@ -16,15 +16,32 @@ The configuration file is created when you run `crust init`. Here's an example o
 
 ### `openaiKey`
 
-Your OpenAI API key. This is required for security analysis and plan explanation.
+Your OpenAI API key. This is required for security analysis and plan explanation. Can be overridden with the `--openai-api-key` command line option.
 
 ### `terraformPlanCommand`
 
-The command used to generate the Terraform plan. This command should output the plan to stdout.
+The command used to generate the Terraform plan. This command should output the plan to stdout. Can be overridden with the `--terraform-plan-command` command line option.
 
 ### `language`
 
-The language for plan explanations. All languages are available.
+The language for plan explanations. All languages are available. Can be overridden with the `--language` command line option.
+
+## Command Line Options
+
+All configuration options can be overridden using command line options:
+
+```bash
+# Override OpenAI API key
+crust security --openai-api-key your-key-here
+
+# Override language
+crust explain --language pt-br
+
+# Override Terraform plan command
+crust all --terraform-plan-command "terraform plan -out=plan.tfplan"
+```
+
+These options take precedence over the global configuration file.
 
 ## Initial Configuration
 

@@ -19,7 +19,17 @@ Crust provides three main commands for analyzing your Terraform infrastructure:
 To analyze your infrastructure for security issues:
 
 ```bash
+# Basic usage
 crust security
+
+# With custom OpenAI API key
+crust security --openai-api-key your-key-here
+
+# With custom language
+crust security --language pt-br
+
+# With custom Terraform plan command
+crust security --terraform-plan-command "terraform plan -out=plan.tfplan"
 ```
 
 This will:
@@ -33,7 +43,14 @@ This will:
 To analyze the cost of your AWS infrastructure changes:
 
 ```bash
+# Basic usage
 crust cost
+
+# With custom OpenAI API key
+crust cost --openai-api-key your-key-here
+
+# With custom Terraform plan command
+crust cost --terraform-plan-command "terraform plan -out=plan.tfplan"
 ```
 
 This will:
@@ -48,7 +65,17 @@ This will:
 To get a clear explanation of your Terraform plan:
 
 ```bash
+# Basic usage
 crust explain
+
+# With custom OpenAI API key
+crust explain --openai-api-key your-key-here
+
+# With custom language
+crust explain --language pt-br
+
+# With custom Terraform plan command
+crust explain --terraform-plan-command "terraform plan -out=plan.tfplan"
 ```
 
 This will:
@@ -63,7 +90,11 @@ This will:
 You can run all analyses at once with:
 
 ```bash
+# Basic usage
 crust all
+
+# With custom options
+crust all --openai-api-key your-key-here --language pt-br --terraform-plan-command "terraform plan -out=plan.tfplan"
 ```
 
 This will execute the Terraform plan once and run all three analyses on the output.
