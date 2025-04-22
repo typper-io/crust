@@ -42,9 +42,6 @@ crust explain
 ```bash
 # Show detailed explanation
 crust explain --verbose
-
-# Output in JSON format
-crust explain --format json
 ```
 
 ## Output Format

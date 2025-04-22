@@ -42,9 +42,6 @@ crust cost
 ```bash
 # Show detailed analysis
 crust cost --verbose
-
-# Output in JSON format
-crust cost --format json
 ```
 
 ## Output Format
