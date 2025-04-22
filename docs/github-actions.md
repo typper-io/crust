@@ -43,28 +43,29 @@ jobs:
           npm install -g @typper-io/crust
 
           # Run analysis and capture output
-          OUTPUT=$(crust all --openai-api-key ${{ secrets.OPENAI_API_KEY }} --terraform-plan-command "terraform plan")
+          OUTPUT=$(crust all --openai-api-key "${{ secrets.OPENAI_API_KEY }}" --terraform-plan-command "terraform plan")
 
-          # Escape output for JSON
-          OUTPUT_JSON=$(echo "$OUTPUT" | jq -Rs .)
-
-          # Set output for later use
-          echo "output=$OUTPUT_JSON" >> $GITHUB_OUTPUT
+          # Set output as environment variable
+          echo "CRUST_OUTPUT<<EOF" >> $GITHUB_ENV
+          echo "$OUTPUT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Comment on PR
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `${{ steps.crust.outputs.output }}`;
-            const parsedOutput = JSON.parse(output);
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `## 🧐 Crust Analysis Results\n\n\`\`\`\n${parsedOutput}\n\`\`\``
-            });
+            try {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## 🧐 Crust Analysis Results\n\n\`\`\`\n${process.env.CRUST_OUTPUT}\n\`\`\``
+              });
+            } catch (error) {
+              console.error('Error creating comment:', error);
+              throw error;
+            }
 ```
 
 ## Required Permissions
@@ -119,11 +120,11 @@ To run only specific analyses:
 - name: Run Crust Analysis
   run: |
     npm install -g @typper-io/crust
-    crust security --openai-api-key ${{ secrets.OPENAI_API_KEY }} --terraform-plan-command "terraform plan"  # Security analysis only
+    crust security --openai-api-key "${{ secrets.OPENAI_API_KEY }}" --terraform-plan-command "terraform plan"  # Security analysis only
     # or
-    crust cost --openai-api-key ${{ secrets.OPENAI_API_KEY }} --terraform-plan-command "terraform plan"     # Cost analysis only
+    crust cost --openai-api-key "${{ secrets.OPENAI_API_KEY }}" --terraform-plan-command "terraform plan"     # Cost analysis only
     # or
-    crust explain --openai-api-key ${{ secrets.OPENAI_API_KEY }} --terraform-plan-command "terraform plan"  # Plan explanation only
+    crust explain --openai-api-key "${{ secrets.OPENAI_API_KEY }}" --terraform-plan-command "terraform plan"  # Plan explanation only
 ```
 
 ### Language Configuration
@@ -134,7 +135,7 @@ To set the analysis language (optional):
 - name: Run Crust Analysis
   run: |
     npm install -g @typper-io/crust
-    crust all --openai-api-key ${{ secrets.OPENAI_API_KEY }} --terraform-plan-command "terraform plan" --language en
+    crust all --openai-api-key "${{ secrets.OPENAI_API_KEY }}" --terraform-plan-command "terraform plan" --language en
 ```
 
 ### Custom Terraform Command
@@ -145,7 +146,7 @@ To use a specific Terraform command:
 - name: Run Crust Analysis
   run: |
     npm install -g @typper-io/crust
-    crust all --openai-api-key ${{ secrets.OPENAI_API_KEY }} --terraform-plan-command "terraform plan -out=plan.tfplan"
+    crust all --openai-api-key "${{ secrets.OPENAI_API_KEY }}" --terraform-plan-command "terraform plan -out=plan.tfplan"
 ```
 
 ## Best Practices
@@ -181,3 +182,6 @@ If you encounter issues:
 5. Verify GITHUB_TOKEN permissions are set correctly
 6. Make sure you're using command options (--option) instead of environment variables
 7. Verify that both required options (`--openai-api-key` and `--terraform-plan-command`) are provided
+8. If using a container, verify it has all required dependencies
+9. Check if Node.js and npm are properly installed
+10. Verify that the environment has access to all required resources
