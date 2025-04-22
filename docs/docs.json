@@ -1,0 +1,55 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Crust",
+  "colors": {
+    "primary": "#4F46E5",
+    "light": "#6366F1",
+    "dark": "#4338CA"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "anchors": [
+      {
+        "anchor": "Documentation",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": ["introduction", "installation", "getting-started"]
+          },
+          {
+            "group": "Features",
+            "pages": ["security-analysis", "cost-analysis", "plan-explanation"]
+          },
+          {
+            "group": "Reference",
+            "pages": ["commands", "configuration"]
+          }
+        ]
+      },
+      {
+        "anchor": "GitHub",
+        "href": "https://github.com/typper-io/crust",
+        "icon": "github"
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/typper-io/crust"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/typper-io/crust"
+    }
+  }
+}
