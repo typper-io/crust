@@ -14,7 +14,7 @@
     "crust": "./dist/src/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "dev": "tsc --watch"
   },
   "author": "",
