@@ -63,7 +63,7 @@ export async function analyzeCost({
       terraformPlanCommand,
     })
 
-    if (!config && !openaiKey && !terraformPlanCommand) {
+    if (!config && (!openaiKey || !terraformPlanCommand)) {
       return
     }
 

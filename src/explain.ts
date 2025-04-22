@@ -23,7 +23,7 @@ export async function explainTerraform({
       terraformPlanCommand,
     })
 
-    if (!config && !openaiKey && !terraformPlanCommand) {
+    if (!config && (!openaiKey || !terraformPlanCommand)) {
       return
     }
 
@@ -57,7 +57,9 @@ export async function explainTerraform({
         {
           role: 'system',
           content: `
-          You will be given a terraform plan output and you will need to format the changes that are being made in ${language}.
+          You will be given a terraform plan output and you will need to format the changes that are being made in ${
+            language || 'English'
+          }.
           Detail the changes with numbers and names.
           Also return one or more tips to the user based on the changes if there are any.
           Use xml to colorize and format the information in paragraphs. Use concise emojis to make the output more engaging.

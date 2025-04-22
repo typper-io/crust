@@ -26,7 +26,7 @@ export async function analyzeSecurity({
       terraformPlanCommand,
     })
 
-    if (!config && !openaiKey && !terraformPlanCommand) {
+    if (!config && (!openaiKey || !terraformPlanCommand)) {
       return
     }
 
@@ -60,7 +60,9 @@ export async function analyzeSecurity({
         {
           role: 'system',
           content: `
-          You will be given a terraform plan output and you will need to analyze the security issues in the changes and return in ${language}.
+          You will be given a terraform plan output and you will need to analyze the security issues in the changes and return in ${
+            language || 'English'
+          }.
           Also return one or more tips to the user fix the issues based on the changes if there are any.
           Use xml to colorize and format the information in paragraphs. Use concise emojis to make the output more engaging.
           DON'T use markdown, use xml tags.
