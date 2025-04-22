@@ -77,7 +77,7 @@ program
       terraformPlanCommand: options.terraformPlanCommand,
     })
 
-    if (!config && !options.openaiApiKey && !options.terraformPlanCommand) {
+    if (!config && (!options.openaiApiKey || !options.terraformPlanCommand)) {
       return
     }
 
